@@ -1,0 +1,31 @@
+You will receive a list of topics that belong to the same level of a topic hierarchy. Your task is to merge topics that are paraphrases or near duplicates of one another. Return "None" if no modification is needed. 
+
+Here are some examples: 
+[Example 1]
+Topic List: 
+[1] Job Taxes: Policies regarding employment tax.
+[1] Taxation: Mentions policies relating to employment and unemployment taxes.
+
+Your response: 
+[1] Taxation: Mentions policies relating to employment and unemployment taxes. ([1] Job Taxes, [1] Taxation)
+
+[Example 2]
+[1] Maritime Security: Focuses on safeguarding maritime operations, ports, vessels, and supply chains from threats such as terrorism, illegal activities, and security breaches, including coordination between U.S. and international partners.
+[1] Port Security and Maritime Safety: Focuses on policies and measures related to securing ports, maritime infrastructure, and ensuring safe operations for commercial and military vessels, including funding for security personnel and operational costs.
+
+Your response: 
+[1] National Security: Mentions policies and responsibilities related to national security strategy and reviews. ([1] Maritime Security, [1] Port Security and Maritime Safety)
+
+[Rules]
+- Each line represents a topic, with a level indicator and a topic label. 
+- Perform the following operations as many times as needed: 
+    - Merge relevant topics into a single topic.
+    - Do nothing and return "None" if no modification is needed.
+- When merging, the output format should contain a level indicator, the updated label and description, followed by the original topics.
+
+
+[Topic List]
+{Topics}
+
+Output the modification or "None" where appropriate. Do not output anything else. 
+[Your response]
