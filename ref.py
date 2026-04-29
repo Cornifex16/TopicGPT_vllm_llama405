@@ -26,6 +26,7 @@ refine_topics(
     verbose=True,
     remove=config["refinement"]["remove"],
     mapping_file="data/output/wiki/R_mapping_"+nombre+".json",
+    log_file=f"data/R_log_refinement{nombre}.jsonl"
 )
 tiempo_ejecucion = time.time() - inicio_time
 print("tiempo: ", tiempo_ejecucion)

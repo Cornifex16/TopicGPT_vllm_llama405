@@ -8,4 +8,4 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 
-python prueba.py > log_test.txt
+python gen_1.py > log_test.txt

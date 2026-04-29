@@ -20,7 +20,7 @@ def assignment_thread(modelo, nombre, offset_num):
         "data/output/sample/chunks/R_assignment_"+nombre+"_N"+str(offset_num)+".jsonl",
         "data/output/sample/R_generation_qwen4.md",
         verbose=config["verbose"],
-        log_file=f"data/log_assignment_bills{offset_num}.jsonl"
+        log_file=f"data/R_log_assignment_bills{offset_num}.jsonl"
     )
     tiempo_ejecucion = time.time() - inicio_time
     print("tiempo: ", tiempo_ejecucion)

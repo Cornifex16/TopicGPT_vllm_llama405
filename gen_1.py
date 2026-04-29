@@ -26,7 +26,8 @@ if __name__ == "__main__":
         config["generation"]["seed"],
         "data/output/wiki/R_generation_"+nombre+".jsonl",
         "data/output/wiki/R_generation_"+nombre+".md",
-        verbose=True
+        verbose=True,
+        log_file=f"data/R_log_generation{nombre}.jsonl"
     )
 
     tiempo_ejecucion = time.time() - inicio_time
