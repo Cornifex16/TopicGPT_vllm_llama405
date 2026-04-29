@@ -89,14 +89,20 @@ class APIClient:
                 api_key='ollama', # required, but unused
                 timeout=600.0
             )
+        elif api == "vllm_server":
+            self.client = OpenAI(
+                base_url=os.environ.get("VLLM_BASE_URL"),
+                api_key=os.environ.get("VLLM_API_KEY", "no-key"),
+                timeout=600.0
+            )
         elif api == "vllm":
             self.hf_token = os.environ.get("HF_TOKEN")
             self.llm = LLM(
                 self.model,
                 download_dir=os.environ.get("HF_HOME", None),
-                max_model_len=6000, # Reduce drásticamente la memoria preasignada para contexto
-                gpu_memory_utilization=0.85, # Bajamos a 70% para no chocar con el uso del sistema
-                enforce_eager=True, # Ahorra un poco de VRAM al inicio
+                max_model_len=6000,
+                gpu_memory_utilization=0.85,
+                enforce_eager=True,
                 dtype="half"
             )
             self.tokenizer = self.llm.get_tokenizer()
@@ -209,7 +215,7 @@ class APIClient:
             try:
                 start_time = time.time()
 
-                if self.api in ["openai", "openrouter", "azure", "ollama", "fireworks", "nvidia"]:
+                if self.api in ["openai", "openrouter", "azure", "ollama", "fireworks", "nvidia", "vllm_server"]:
                     completion = self.client.chat.completions.create(
                         model=self.model,
                         messages=message,

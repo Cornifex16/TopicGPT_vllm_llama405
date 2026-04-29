@@ -21,7 +21,7 @@ if __name__ == "__main__":
     inicio_time = time.time()
 
     generate_topic_lvl1_resume(
-        "vllm", 
+        "vllm_server", 
         modelo,
         "data/input/sample.jsonl",
         config["generation"]["prompt"],
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     inicio_time = time.time()
 
     refine_topics(
-        "vllm",
+        "vllm_server",
         modelo,
         config["refinement"]["prompt"],
         "data/output/sample/R_generation_"+nombre+".jsonl",
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     print("tiempo: ", tiempo_ejecucion)
 
     assign_topics_resume(
-        "vllm",
+        "vllm_server",
         modelo,
         "data/input/sample.jsonl",
         "prompt/assignment alt.txt",
