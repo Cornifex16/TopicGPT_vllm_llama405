@@ -1,19 +1,41 @@
-unzip "data/input/wiki_test.jsonl.zip"
+#!/bin/bash
+set -e
 
-pyenv install 3.10.4
+MODELO=${1:-"llama-3.1-405b"}
+API=${2:-"vllm_server"}
+NOMBRE_BILL=${3:-"llama405_bills"}
+NOMBRE_WIKI=${4:-"llama405_wiki"}
 
-pyenv local 3.10.4
+echo "$API"
+echo "$MODELO"
+echo "$NOMBRE_BILL"
+echo "$NOMBRE_WIKI"
 
-python -m venv .venv
+if [ -z "$VIRTUAL_ENV" ]; then
+    source .venv/bin/activate
+fi
 
-source .venv/bin/activate
+echo "-- Ejecutando gen_1.py"
+python gen_1.py \
+    --api "$API" \
+    --model "$MODELO" \
+    --nombre "$NOMBRE_WIKI" > "log_gen_${NOMBRE}.txt"
 
-pip install -r requirements.txt
 
-python gen_1.py > log_gen.txt
+echo "-- Ejecutando ref.py"
+python ref.py \
+    --api "$API" \
+    --model "$MODELO" \
+    --nombre "$NOMBRE_WIKI" > "log_ref_${NOMBRE}.txt"
 
-python ref.py > log_ref.txt
+echo "-- Ejecutando assignment_chunks.py"
+python assignment_chunks.py \
+    --api "$API" \
+    --model "$MODELO" \
+    --nombre "$NOMBRE_WIKI" > "log_asig_wiki_${NOMBRE}.txt"
 
-python assignment_chunks.py > log_asig_wiki.txt
-
-python assignment_chunks_bills.py > log_asig_bills.txt
+echo "-- Ejecutando assignment_chunks_bills.py"
+python assignment_chunks_bills.py \
+    --api "$API" \
+    --model "$MODELO" \
+    --nombre "$NOMBRE_BILL" > "log_asig_bills_${NOMBRE}.txt"

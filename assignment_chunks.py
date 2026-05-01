@@ -8,17 +8,18 @@ import json
 import os
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import argparse
 
 
-def assignment_thread(modelo, nombre, offset_num):
+def assignment_thread(modelo, nombre, api, offset_num):
     inicio_time = time.time()
     assign_topics_resume(
-        "vllm",
+        api,
         modelo,
         "data/input/wiki_chunks/wiki_test"+str(offset_num)+".jsonl",
         "prompt/assignment alt.txt",
         "data/output/wiki/chunks/R_assignment_"+nombre+"_N"+str(offset_num)+".jsonl",
-        "data/output/wiki/R_generation_qwen4.md",
+        "data/output/wiki/R_refinement_"+nombre+".md",
         verbose=config["verbose"],
         log_file=f"data/R_log_assignment_wiki{offset_num}.jsonl"
     )
@@ -62,20 +63,26 @@ def merge_chunks(input_directory, nombre, output_file):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--api", type=str, default="vllm_server", required=True)
+    parser.add_argument("--model", type=str, default="llama-3.1-405b", required=True)
+    parser.add_argument("--nombre", type=str, default="llama405_wiki", required=True)
+    args = parser.parse_args()
     load_dotenv()
     with open("config.yml", "r") as f:
         config = yaml.safe_load(f)
     # ahora se aplica lo de threads 
-    modelo = "meta-llama/Llama-3.1-405B-Instruct"
-    nombre = "vllm_llama405_wiki"
+    api = args.api
+    modelo = args.model
+    nombre = args.nombre
     data_to_chunks(
-        "data/input/bills_test.jsonl",
+        "data/input/wiki_test.jsonl",
         14
     )
     with ThreadPoolExecutor(max_workers=8) as executor:
         futures = {}
         for i in range(15):
-            futures[executor.submit(assignment_thread, modelo, nombre, i)] = i
+            futures[executor.submit(assignment_thread, modelo, nombre, api, i)] = i
         tiempo_total = 0
         for future in as_completed(futures):
             data_temp = futures[future]

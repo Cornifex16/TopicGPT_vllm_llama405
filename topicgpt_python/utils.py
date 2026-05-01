@@ -21,7 +21,6 @@ from vertexai.generative_models import (
 from anthropic import AnthropicVertex
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
-import boto3
 
 from sklearn import metrics
 import numpy as np
@@ -225,7 +224,7 @@ class APIClient:
                         timeout=120.0
                     )
                     if not completion or not completion.choices:
-                        print("----fallo encontrado desde openrouter (respuesta vacía)----")
+                        print("----fallo encontrado desde proovedor (respuesta vacía)----")
                         print(completion.model_dump_json()) # Cuidado si completion es None
                     if verbose:
                         print(

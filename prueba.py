@@ -8,16 +8,23 @@ import json
 import os
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import argparse
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--api", type=str, default="vllm_server", required=True)
+    parser.add_argument("--model", type=str, default="llama-3.1-405b", required=True)
+    parser.add_argument("--nombre", type=str, default="llama405_wiki", required=True)
+    args = parser.parse_args()
+
     with open("config.yml", "r") as f:
         config = yaml.safe_load(f)
 
     load_dotenv()
-
-    modelo = "meta-llama/Llama-3.1-405B-Instruct"
-    nombre = "vllm_llama405_test"
+    api = args.api
+    modelo = args.model
+    nombre = args.nombre
     inicio_time = time.time()
 
     generate_topic_lvl1_resume(
