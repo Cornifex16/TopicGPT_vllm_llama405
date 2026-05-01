@@ -15,7 +15,11 @@ if [ -z "$VIRTUAL_ENV" ]; then
     source .venv/bin/activate
 fi
 
-
+echo "-- Ejecutando assignment_chunks.py"
+python assignment_chunks.py \
+    --api "$API" \
+    --model "$MODELO" \
+    --nombre "$NOMBRE_WIKI" > "log_asig_wiki_${NOMBRE}.txt"
 
 echo "-- Ejecutando assignment_chunks_bills.py"
 python assignment_chunks_bills.py \
