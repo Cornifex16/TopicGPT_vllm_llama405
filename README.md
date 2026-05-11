@@ -83,7 +83,7 @@ Hay otros dos scripts `ejecucion_refinamiento.sh` y `ejecucion_asignacion.sh` qu
 
 ```bash
 chmod +x ejecucion.sh
-./ejecucion.sh "vllm_server" "meta-llama/Llama-3.1-405B-Instruct" "wiki" "llama405"
+./ejecucion.sh "meta-llama/Llama-3.1-405B-Instruct" "vllm_server" "wiki" "llama405"
 ```
 
 ## Estructura de Salida (Outputs)
