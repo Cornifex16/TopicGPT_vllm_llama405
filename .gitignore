@@ -1,6 +1,8 @@
 test*
 R_*
 data/tiempo.json
+log*
+llm_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
