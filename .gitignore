@@ -4,10 +4,8 @@ data/tiempo.json
 log*
 llm_*
 .python-version
-bills_subset.jsonl
-bills_test.jsonl
-wiki_subset.jsonl
-wiki_test.jsonl
+asig_set.jsonl
+gen_set.jsonl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

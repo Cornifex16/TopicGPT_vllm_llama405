@@ -3,13 +3,13 @@ set -e
 
 MODELO=${1:-"llama-3.1-405b"}
 API=${2:-"vllm_server"}
-NOMBRE_BILL=${3:-"llama405_bills"}
-NOMBRE_WIKI=${4:-"llama405_wiki"}
+DATASET=${3:-"wiki"}
+NOMBRE=${4:-"llama405_wiki"}
 
-echo "$API"
 echo "$MODELO"
-echo "$NOMBRE_BILL"
-echo "$NOMBRE_WIKI"
+echo "$API"
+echo "$DATASET"
+echo "$NOMBRE"
 
 if [ -z "$VIRTUAL_ENV" ]; then
     source .venv/bin/activate
@@ -18,13 +18,6 @@ fi
 echo "-- Ejecutando assignment_chunks.py"
 python assignment_chunks.py \
     --api "$API" \
-    --dataset "wiki"\
+    --dataset "$DATASET"\
     --model "$MODELO" \
-    --nombre "$NOMBRE_WIKI" > "log_asig_wiki_${NOMBRE}.txt"
-
-echo "-- Ejecutando assignment_chunks_bills.py"
-python assignment_chunks_bills.py \
-    --api "$API" \
-    --dataset "bills"\
-    --model "$MODELO" \
-    --nombre "$NOMBRE_BILL" > "log_asig_bills_${NOMBRE}.txt"
+    --nombre "$NOMBRE" > "log_asig_${DATASET}_${NOMBRE}.txt"

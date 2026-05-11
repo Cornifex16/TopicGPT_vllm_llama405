@@ -30,7 +30,7 @@ if __name__ == "__main__":
     generate_topic_lvl1_resume(
         api,
         modelo,
-        f"data/input/{dataset}/wiki_subset.jsonl",
+        f"data/input/{dataset}/gen_set.jsonl",
         config["generation"]["prompt"],
         config["generation"]["seed"],
         f"data/output/{dataset}/R_generation_{nombre}.jsonl",

@@ -16,7 +16,7 @@ def assignment_thread(modelo, nombre, api, dataset, offset_num):
     assign_topics_resume(
         api,
         modelo,
-        f"data/input/{dataset}_chunks/wiki_test"+str(offset_num)+".jsonl",
+        f"data/input/{dataset}_chunks/asig_set_"+str(offset_num)+".jsonl",
         "prompt/assignment alt.txt",
         f"data/output/{dataset}/chunks/R_assignment_"+nombre+"_N"+str(offset_num)+".jsonl",
         f"data/output/{dataset}/R_refinement_"+nombre+".md",
@@ -50,7 +50,7 @@ def data_to_chunks(input_file, num_chunks, dataset):
     print(len(chunks[0]))
     for i in range(len(chunks)):
         df_chunk = chunks[i]
-        df_chunk.to_json(f"data/input/{dataset}_chunks/{dataset}_"+str(i)+".jsonl", lines=True, orient="records")
+        df_chunk.to_json(f"data/input/{dataset}_chunks/asig_set_"+str(i)+".jsonl", lines=True, orient="records")
 
 def merge_chunks(input_directory, nombre, output_file):
     with open(output_file, "w") as archivo:
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     modelo = args.model
     nombre = args.nombre
     data_to_chunks(
-        f"data/input/{dataset}/{dataset}_test.jsonl",
+        f"data/input/{dataset}/asig_set.jsonl",
         14,
         dataset
     )

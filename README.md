@@ -55,7 +55,7 @@ Estos parametros siguen el siguiente listado de opciones disponibles:
 - `wiki`
 - `bills`
 
-El usuario es libre de ingresar mas provedorees dentro del codigo y mas datasets, asegurar de mantener el orden de las carpetas.
+El usuario es libre de ingresar mas provedorees dentro del codigo y mas datasets, asegurar de mantener el orden de las carpetas y los nombres adecuados.
 ```text
 TopicGPT_vllm_llama405/
 └── data/
@@ -63,6 +63,8 @@ TopicGPT_vllm_llama405/
     │   ├── bills/
     │   ├── wiki/
     │   └── dataset/
+    │       ├── gen_set.jsonl
+    │       └── asig_set.jsonl
     ├── logs/
     │   ├── bills/
     │   ├── wiki/
@@ -72,6 +74,10 @@ TopicGPT_vllm_llama405/
         ├── wiki/
         └── dataset/
 ```
+
+## Reanudar desde cualquier etapa
+
+Hay otros dos scripts `ejecucion_refinamiento.sh` y `ejecucion_asignacion.sh` que continuan el pipeline desde los procesos de refinamiento y asignacion en adelante. Usan los mismo parametros que `ejecucion.sh` asi que mantener la consistencia al ejecutar.
 
 ### Comando de Ejecución de Ejemplo:
 
