@@ -18,11 +18,13 @@ fi
 echo "-- Ejecutando assignment_chunks.py"
 python assignment_chunks.py \
     --api "$API" \
+    --dataset "wiki"\
     --model "$MODELO" \
     --nombre "$NOMBRE_WIKI" > "log_asig_wiki_${NOMBRE}.txt"
 
 echo "-- Ejecutando assignment_chunks_bills.py"
 python assignment_chunks_bills.py \
     --api "$API" \
+    --dataset "bills"\
     --model "$MODELO" \
     --nombre "$NOMBRE_BILL" > "log_asig_bills_${NOMBRE}.txt"

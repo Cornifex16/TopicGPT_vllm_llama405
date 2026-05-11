@@ -8,7 +8,6 @@ verbose: True
 # content: each file should have a text, and optionally id and label columns
 # ----------------- 
 data_sample: "data/input/sample.jsonl"
-data_bills: "data/input/bills_test.jsonl"
 
 # --- Generation ---
 # prompt: prompt to generate 1st-level topics

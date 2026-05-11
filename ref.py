@@ -11,6 +11,7 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--api", type=str, default="vllm_server", required=True)
+    parser.add_argument("--dataset", type=str, default="wiki", required=True)
     parser.add_argument("--model", type=str, default="llama-3.1-405b", required=True)
     parser.add_argument("--nombre", type=str, default="llama405_wiki", required=True)
     args = parser.parse_args()
@@ -20,6 +21,7 @@ if __name__ == "__main__":
 
     load_dotenv()
     api = args.api
+    dataset = args.dataset
     modelo = args.model
     nombre = args.nombre
     inicio_time = time.time()
@@ -28,28 +30,28 @@ if __name__ == "__main__":
         api,
         modelo,
         config["refinement"]["prompt"],
-        "data/output/wiki/R_generation_"+nombre+".jsonl",
-        "data/output/wiki/R_generation_"+nombre+".md",
-        "data/output/wiki/R_refinement_"+nombre+".md",
-        "data/output/wiki/R_refinement_"+nombre+".jsonl",
+        f"data/output/{dataset}/R_generation_"+nombre+".jsonl",
+        f"data/output/{dataset}/R_generation_"+nombre+".md",
+        f"data/output/{dataset}/R_refinement_"+nombre+".md",
+        f"data/output/{dataset}/R_refinement_"+nombre+".jsonl",
         verbose=True,
         remove=config["refinement"]["remove"],
-        mapping_file="data/output/wiki/R_mapping_"+nombre+".json",
-        log_file=f"data/R_log_refinement{nombre}.jsonl"
+        mapping_file=f"data/output/{dataset}/R_mapping_"+nombre+".json",
+        log_file=f"data/logs/{dataset}/R_log_refinement{nombre}.jsonl"
     )
     tiempo_ejecucion = time.time() - inicio_time
     print("tiempo: ", tiempo_ejecucion)
 
-    archivo_tiempo = "tiempo.json"
+    archivo_tiempo = "data/tiempo.json"
     if os.path.exists(archivo_tiempo) and os.path.getsize(archivo_tiempo) > 0:
         with open(archivo_tiempo, "r") as archivo:
             datos = json.load(archivo)
     else:
         datos = {}
-    if nombre + " refinamiento" in datos:
+    if nombre + "_" + dataset + " refinamiento" in datos:
         print("el modelo existe")
     else:
         print("el modelo no existe")
-    datos[nombre + " refinamiento"] = tiempo_ejecucion
+    datos[nombre + "_" + dataset + " refinamiento"] = tiempo_ejecucion
     with open(archivo_tiempo, "w") as archivo:
         json.dump(datos, archivo, indent=4)

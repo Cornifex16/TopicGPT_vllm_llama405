@@ -11,37 +11,37 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import argparse
 
 
-def assignment_thread(modelo, nombre, api, offset_num):
+def assignment_thread(modelo, nombre, api, dataset, offset_num):
     inicio_time = time.time()
     assign_topics_resume(
         api,
         modelo,
-        "data/input/wiki_chunks/wiki_test"+str(offset_num)+".jsonl",
+        f"data/input/{dataset}_chunks/wiki_test"+str(offset_num)+".jsonl",
         "prompt/assignment alt.txt",
-        "data/output/wiki/chunks/R_assignment_"+nombre+"_N"+str(offset_num)+".jsonl",
-        "data/output/wiki/R_refinement_"+nombre+".md",
+        f"data/output/{dataset}/chunks/R_assignment_"+nombre+"_N"+str(offset_num)+".jsonl",
+        f"data/output/{dataset}/R_refinement_"+nombre+".md",
         verbose=config["verbose"],
-        log_file=f"data/R_log_assignment_wiki{offset_num}.jsonl"
+        log_file=f"data/logs/{dataset}/R_log_assignment_{offset_num}.jsonl"
     )
     tiempo_ejecucion = time.time() - inicio_time
     print("tiempo: ", tiempo_ejecucion)
 
-    archivo_tiempo = "tiempo.json"
+    archivo_tiempo = "data/tiempo.json"
     if os.path.exists(archivo_tiempo) and os.path.getsize(archivo_tiempo) > 0:
         with open(archivo_tiempo, "r") as archivo:
             datos = json.load(archivo)
     else:
         datos = {}
-    if modelo + " assignacion_"+str(offset_num) in datos:
+    if nombre + "_" + dataset + " asignacion" +str(offset_num) in datos:
         print("el modelo existe")
     else:
         print("el modelo no existe")
-    datos[modelo + " assignacion_"+str(offset_num)] = tiempo_ejecucion
+    datos[nombre + "_" + dataset + " asignacion"+str(offset_num)] = tiempo_ejecucion
     with open(archivo_tiempo, "w") as archivo:
         json.dump(datos, archivo, indent=4)
     return tiempo_ejecucion, offset_num
 
-def data_to_chunks(input_file, num_chunks):
+def data_to_chunks(input_file, num_chunks, dataset):
     df = pd.read_json(input_file, lines=True)
     largo = len(df)
     chunk_size = int(largo / num_chunks)
@@ -50,7 +50,7 @@ def data_to_chunks(input_file, num_chunks):
     print(len(chunks[0]))
     for i in range(len(chunks)):
         df_chunk = chunks[i]
-        df_chunk.to_json("data/input/wiki_chunks/wiki_test"+str(i)+".jsonl", lines=True, orient="records")
+        df_chunk.to_json(f"data/input/{dataset}_chunks/{dataset}_"+str(i)+".jsonl", lines=True, orient="records")
 
 def merge_chunks(input_directory, nombre, output_file):
     with open(output_file, "w") as archivo:
@@ -65,6 +65,7 @@ def merge_chunks(input_directory, nombre, output_file):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--api", type=str, default="vllm_server", required=True)
+    parser.add_argument("--dataset", type=str, default="wiki", required=True)
     parser.add_argument("--model", type=str, default="llama-3.1-405b", required=True)
     parser.add_argument("--nombre", type=str, default="llama405_wiki", required=True)
     args = parser.parse_args()
@@ -73,16 +74,18 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
     # ahora se aplica lo de threads 
     api = args.api
+    dataset = args.dataset
     modelo = args.model
     nombre = args.nombre
     data_to_chunks(
-        "data/input/wiki_test.jsonl",
-        14
+        f"data/input/{dataset}/{dataset}_test.jsonl",
+        14,
+        dataset
     )
     with ThreadPoolExecutor(max_workers=8) as executor:
         futures = {}
         for i in range(15):
-            futures[executor.submit(assignment_thread, modelo, nombre, api, i)] = i
+            futures[executor.submit(assignment_thread, modelo, nombre, api, dataset, i)] = i
         tiempo_total = 0
         for future in as_completed(futures):
             data_temp = futures[future]
@@ -94,7 +97,7 @@ if __name__ == "__main__":
                 print(f'chunk {str(data_temp)} se genero en este tiempo: {str(data[0])}')
                 tiempo_total += data[0]
     merge_chunks(
-        "data/output/sample/chunks",
+        f"data/output/{dataset}/chunks",
         nombre,
-        "data/output/sample/R_asignacion_"+nombre+".jsonl"
+        f"data/output/{dataset}/R_asignacion_"+nombre+".jsonl"
     )

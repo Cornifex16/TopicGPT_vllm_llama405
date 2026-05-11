@@ -1,11 +1,31 @@
 #!/bin/bash
 set -e
 
-if [ -f "data/input/wiki_test.jsonl.zip" ] && [ ! -f "data/input/wiki_test.jsonl" ]; then
-    echo "descomprimiendo wiki"
-    unzip "data/input/wiki_test.jsonl.zip" -d "data/input/"
+# 1. Descomprimir datos de Wiki
+echo "-> Verificando datos de Wiki..."
+if [ -f "data/input/wiki/wiki.zip" ]; then
+    if [ ! -f "data/input/wiki/wiki_test.jsonl" ]; then
+        echo "   Descomprimiendo wiki.zip..."
+        # -n evita sobrescribir archivos si ya existen parcialmente
+        unzip -n "data/input/wiki/wiki.zip" -d "data/input/wiki/"
+    else
+        echo "   Los datos de Wiki ya estaban descomprimidos."
+    fi
 else
-    echo "wiki descomprimido o no existe"
+    echo "   ADVERTENCIA: No se encontró data/input/wiki/wiki.zip"
+fi
+
+# 2. Descomprimir datos de Bills (Leyes/Congreso)
+echo "-> Verificando datos de Bills..."
+if [ -f "data/input/bills/bills.zip" ]; then
+    if [ ! -f "data/input/bills/bills_test.jsonl" ]; then
+        echo "   Descomprimiendo bills.zip..."
+        unzip -n "data/input/bills/bills.zip" -d "data/input/bills/"
+    else
+        echo "   Los datos de Bills ya estaban descomprimidos."
+    fi
+else
+    echo "   ADVERTENCIA: No se encontró data/input/bills/bills.zip"
 fi
 
 pyenv install -s 3.10.4 
@@ -17,4 +37,5 @@ fi
 
 source .venv/bin/activate
 
+pip install --upgrade pip
 pip install -r requirements.txt
