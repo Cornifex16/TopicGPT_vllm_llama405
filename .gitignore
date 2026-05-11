@@ -6,6 +6,7 @@ llm_*
 .python-version
 asig_set.jsonl
 gen_set.jsonl
+pip_tmp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

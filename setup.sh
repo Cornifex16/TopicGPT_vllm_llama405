@@ -37,5 +37,16 @@ fi
 
 source .venv/bin/activate
 
+# Nombre del directorio a crear
+DIR="pip_tmp"
+
+# Verificar si ya existe para evitar errores
+if [ ! -d "$DIR" ]; then
+    mkdir "$DIR"
+    echo "Directorio $DIR creado exitosamente."
+else
+    echo "El directorio $DIR ya existe."
+fi
+
 pip install --upgrade pip
-pip install -r requirements.txt
+TMPDIR=./pip_tmp pip install --no-cache-dir -r requirements.txt

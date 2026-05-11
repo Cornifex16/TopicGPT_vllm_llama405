@@ -15,7 +15,6 @@ if [ -z "$VIRTUAL_ENV" ]; then
     source .venv/bin/activate
 fi
 
-
 echo "-- Ejecutando ref.py"
 python ref.py \
     --api "$API" \

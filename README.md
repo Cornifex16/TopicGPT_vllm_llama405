@@ -62,17 +62,17 @@ TopicGPT_vllm_llama405/
     ├── input/
     │   ├── bills/
     │   ├── wiki/
-    │   └── dataset/
+    │   └── <dataset>/
     │       ├── gen_set.jsonl
     │       └── asig_set.jsonl
     ├── logs/
     │   ├── bills/
     │   ├── wiki/
-    │   └── dataset/
+    │   └── <dataset>/
     └── output/
         ├── bills/
         ├── wiki/
-        └── dataset/
+        └── <dataset>/
 ```
 
 ## Reanudar desde cualquier etapa
