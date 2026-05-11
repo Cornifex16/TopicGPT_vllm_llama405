@@ -7,6 +7,7 @@ llm_*
 asig_set.jsonl
 gen_set.jsonl
 pip_tmp
+bills_chunks/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

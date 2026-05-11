@@ -214,7 +214,7 @@ class APIClient:
             try:
                 start_time = time.time()
 
-                if self.api in ["openai", "openrouter", "azure", "ollama", "fireworks", "nvidia", "vllm_server"]:
+                if self.api in ["openai", "openrouter", "azure", "ollama", "fireworks", "nvidia", "vllm_server", "aws"]:
                     completion = self.client.chat.completions.create(
                         model=self.model,
                         messages=message,
@@ -266,26 +266,8 @@ class APIClient:
                             f"~${completion.usage.completion_tokens/1000000*15}",
                         )
                     respuesta = completion.choices[0].message
+                    self._log_interaction(prompt, completion.model_dump(), respuesta.content, latency)
                     return respuesta.content
-
-                elif self.api == "aws":
-                    request_native = {
-                        "prompt": message,
-                        "max_gen_len": max_tokens,
-                        "temperature": temperature,
-                        "top_p": top_p,
-                        "timeout": 120.0
-                    }
-                    request = json.dumps(request_native)
-                    print("antes de invocacion")
-                    response = self.client.invoke_model(modelId=self.model, body=request)
-                    print("despues de invocacion")
-                    model_response = json.loads(response["body"].read())
-
-                    # Extract and print the response text.
-                    response_text = model_response["generation"]
-                    print(response_text)
-                    return response_text
 
                 elif self.api == "vertex":
                     if self.model.startswith("claude"):
