@@ -37,7 +37,7 @@ if __name__ == "__main__":
         verbose=True,
         remove=config["refinement"]["remove"],
         mapping_file=f"data/output/{dataset}/R_mapping_"+nombre+".json",
-        log_file=f"data/logs/{dataset}/R_log_refinement{nombre}.jsonl"
+        log_file=f"data/logs/{dataset}/R_log_refinement_{nombre}.jsonl"
     )
     tiempo_ejecucion = time.time() - inicio_time
     print("tiempo: ", tiempo_ejecucion)

@@ -36,7 +36,7 @@ if __name__ == "__main__":
         f"data/output/{dataset}/R_generation_{nombre}.jsonl",
         f"data/output/{dataset}/R_generation_{nombre}.md",
         verbose=True,
-        log_file=f"data/logs/{dataset}/R_log_generation{nombre}.jsonl"
+        log_file=f"data/logs/{dataset}/R_log_generation_{nombre}.jsonl"
     )
 
     tiempo_ejecucion = time.time() - inicio_time
