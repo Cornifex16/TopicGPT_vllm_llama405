@@ -3,6 +3,11 @@ R_*
 data/tiempo.json
 log*
 llm_*
+.python-version
+bills_subset.jsonl
+bills_test.jsonl
+wiki_subset.jsonl
+wiki_test.jsonl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

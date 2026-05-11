@@ -77,7 +77,7 @@ TopicGPT_vllm_llama405/
 
 ```bash
 chmod +x ejecucion.sh
-./ejecucion.sh "vllm_server" "meta-llama/Llama-3.1-405B-Instruct" "wiki" "llama405_wiki"
+./ejecucion.sh "vllm_server" "meta-llama/Llama-3.1-405B-Instruct" "wiki" "llama405"
 ```
 
 ## Estructura de Salida (Outputs)
