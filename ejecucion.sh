@@ -6,8 +6,8 @@ API=${2:-"vllm_server"}
 DATASET=${3:-"wiki"}
 NOMBRE=${4:-"llama405_wiki"}
 
-echo "$API"
 echo "$MODELO"
+echo "$API"
 echo "$DATASET"
 echo "$NOMBRE"
 
