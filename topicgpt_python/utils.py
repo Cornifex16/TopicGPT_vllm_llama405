@@ -238,6 +238,7 @@ class APIClient:
                             f"~${completion.usage.completion_tokens/1000000*15}",
                         )
                     respuesta = completion.choices[0].message
+                    latency = time.time() - start_time
                     self._log_interaction(prompt, completion.model_dump(), respuesta.content, latency)
                     return respuesta.content
                 
@@ -266,6 +267,7 @@ class APIClient:
                             f"~${completion.usage.completion_tokens/1000000*15}",
                         )
                     respuesta = completion.choices[0].message
+                    latency = time.time() - start_time
                     self._log_interaction(prompt, completion.model_dump(), respuesta.content, latency)
                     return respuesta.content
 
