@@ -28,11 +28,8 @@ else
     echo "   ADVERTENCIA: No se encontró data/input/bills/bills.zip"
 fi
 
-pyenv install -s 3.10.4 
-pyenv local 3.10.4
-
 if [ ! -d ".venv" ]; then
-    python -m venv .venv
+    python3 -m venv .venv
 fi
 
 source .venv/bin/activate

@@ -6,6 +6,7 @@ import pandas as pd
 from anytree import Node
 import traceback
 import subprocess
+import httpx
 
 from openai import OpenAI, AzureOpenAI
 import tiktoken
@@ -92,7 +93,8 @@ class APIClient:
             self.client = OpenAI(
                 base_url=os.environ.get("VLLM_BASE_URL"),
                 api_key=os.environ.get("VLLM_API_KEY", "no-key"),
-                timeout=600.0
+                timeout=600.0,
+                http_client=httpx.Client(verify=False),
             )
         elif api == "vllm":
             self.hf_token = os.environ.get("HF_TOKEN")
@@ -238,9 +240,13 @@ class APIClient:
                             f"~${completion.usage.completion_tokens/1000000*15}",
                         )
                     respuesta = completion.choices[0].message
+                    text_output = respuesta.content
+                    # Fallback for reasoning models that put output in reasoning_content
+                    if text_output is None:
+                        text_output = getattr(respuesta, 'reasoning_content', None) or ""
                     latency = time.time() - start_time
-                    self._log_interaction(prompt, completion.model_dump(), respuesta.content, latency)
-                    return respuesta.content
+                    self._log_interaction(prompt, completion.model_dump(), text_output, latency)
+                    return text_output
                 
                 elif self.api == "dashscope":
                     completion = self.client.chat.completions.create(
