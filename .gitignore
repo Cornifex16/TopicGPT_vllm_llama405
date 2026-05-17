@@ -8,6 +8,7 @@ asig_set.jsonl
 gen_set.jsonl
 pip_tmp
 bills_chunks/
+wiki_chunks/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
