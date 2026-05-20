@@ -266,7 +266,7 @@ def assign_topics(api, model, data, prompt_file, out_file, topic_file, verbose):
 
 def assign_topics_resume(api, model, data, prompt_file, out_file, topic_file, log_file, verbose):
     api_client = APIClient(api=api, model=model, log_file=log_file)
-    max_tokens, temperature, top_p = 300, 0.0, 0.0
+    max_tokens, temperature, top_p = 1000, 0.0, 0.0
 
     if verbose:
         print("-------------------")

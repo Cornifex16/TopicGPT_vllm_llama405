@@ -251,7 +251,7 @@ def generate_topic_lvl1_resume(
     Generate high-level topics with RESUME capability.
     """
     api_client = APIClient(api=api, model=model, log_file=log_file)
-    max_tokens, temperature, top_p = 300, 0.0, 0.001
+    max_tokens, temperature, top_p = 1000, 0.0, 0.001
 
     if verbose:
         print("-------------------")

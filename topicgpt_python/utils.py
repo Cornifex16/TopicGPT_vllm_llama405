@@ -216,12 +216,44 @@ class APIClient:
             try:
                 start_time = time.time()
 
-                if self.api in ["openai", "openrouter", "azure", "ollama", "fireworks", "nvidia", "vllm_server", "aws"]:
+                if self.api in ["openai", "openrouter", "azure", "ollama", "fireworks", "nvidia", "aws"]:
                     completion = self.client.chat.completions.create(
                         model=self.model,
                         messages=message,
                         max_tokens=max_tokens,
                         temperature=temperature,
+                        top_p=top_p,
+                        timeout=120.0
+                    )
+                    if not completion or not completion.choices:
+                        print("----fallo encontrado desde proovedor (respuesta vacía)----")
+                        print(completion.model_dump_json()) # Cuidado si completion es None
+                    if verbose:
+                        print(
+                            "Prompt token usage:",
+                            completion.usage.prompt_tokens,
+                            f"~${completion.usage.prompt_tokens/1000000*5}",
+                        )
+                        print(
+                            "Response token usage:",
+                            completion.usage.completion_tokens,
+                            f"~${completion.usage.completion_tokens/1000000*15}",
+                        )
+                    respuesta = completion.choices[0].message
+                    text_output = respuesta.content
+                    # Fallback for reasoning models that put output in reasoning_content
+                    if text_output is None:
+                        text_output = getattr(respuesta, 'reasoning_content', None) or ""
+                    latency = time.time() - start_time
+                    self._log_interaction(prompt, completion.model_dump(), text_output, latency)
+                    return text_output
+                
+                elif self.api == "vllm_server":
+                    completion = self.client.chat.completions.create(
+                        model=self.model,
+                        messages=message,
+                        temperature=temperature,
+                        max_tokens=8000,
                         top_p=top_p,
                         timeout=120.0
                     )
